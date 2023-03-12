@@ -27,6 +27,8 @@ public class ValidationTest {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999");
+
     }
     @AfterEach
     void tearDown() {
@@ -37,8 +39,9 @@ public class ValidationTest {
 
     @Test
     void shouldGiveMessageAboutInvalidName(){
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id = name] input")).sendKeys("Harry Potter");
+        driver.findElement(By.cssSelector("[data-test-id = phone] input")).sendKeys("+78005553535");
+        driver.findElement(By.cssSelector("[data-test-id = agreement] ")).click();
         driver.findElement(By.cssSelector("[type = button]")).click();
         String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
         String actual = driver.findElement(By.cssSelector("[data-test-id = name] span.input__sub")).getText();
@@ -47,9 +50,9 @@ public class ValidationTest {
 
     @Test
     void shouldGiveMessageAboutInvalidPhoneNumber(){
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id = name] input")).sendKeys("Гарри Гончар");
         driver.findElement(By.cssSelector("[data-test-id = phone] input")).sendKeys("+7 (800) 555 35 35");
+        driver.findElement(By.cssSelector("[data-test-id = agreement] ")).click();
         driver.findElement(By.cssSelector("[type = button]")).click();
         String expected = "Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.";
         String actual = driver.findElement(By.cssSelector("[data-test-id = phone] span.input__sub")).getText();
@@ -58,7 +61,8 @@ public class ValidationTest {
 
     @Test
     void shouldShowMessageAboutEmptyFieldName(){
-        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id = phone] input")).sendKeys("+78005553535");
+        driver.findElement(By.cssSelector("[data-test-id = agreement] ")).click();
         driver.findElement(By.cssSelector("[type = button]")).click();
         String expected = "Поле обязательно для заполнения";
         String actual = driver.findElement(By.cssSelector("[data-test-id = name] span.input__sub")).getText();
@@ -67,8 +71,8 @@ public class ValidationTest {
 
     @Test
     void shouldShowMessageAboutEmptyFieldPhoneNumber(){
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id = name] input")).sendKeys("Гарри Гончар");
+        driver.findElement(By.cssSelector("[data-test-id = agreement] ")).click();
         driver.findElement(By.cssSelector("[type = button]")).click();
         String expected = "Поле обязательно для заполнения";
         String actual = driver.findElement(By.cssSelector("[data-test-id = phone] span.input__sub")).getText();
@@ -77,7 +81,6 @@ public class ValidationTest {
 
     @Test
     void shouldMakeTheCheckboxRed(){
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id = name] input")).sendKeys("Гарри Гончар");
         driver.findElement(By.cssSelector("[data-test-id = phone] input")).sendKeys("+78005553535");
         driver.findElement(By.cssSelector("[type = button]")).click();

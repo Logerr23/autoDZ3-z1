@@ -24,6 +24,7 @@ public class OrderTest {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999");
     }
     @AfterEach
     void tearDown() {
@@ -34,7 +35,6 @@ public class OrderTest {
 
     @Test
     void shouldTestV1() {
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id = name] input")).sendKeys("Игорь Дроздов");
         driver.findElement(By.cssSelector("[data-test-id = phone] input")).sendKeys("+78005553535");
         driver.findElement(By.cssSelector("[data-test-id = agreement] ")).click();
